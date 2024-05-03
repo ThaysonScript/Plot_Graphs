@@ -1,6 +1,6 @@
 try:
     import pandas as pd
-    from logs import PASTA_LOGS, NAME_FORMAT
+    from plotagem.logs import PASTA_LOGS, NAME_FORMAT
     
 except ImportError as e:
     print(f'Erro de importação: {e}')
@@ -9,7 +9,7 @@ except ImportError as e:
 pasta_logs = f'{PASTA_LOGS}/fragmentation.csv'
 minimum_process_occurrences = 15
 
-def fragmentacao():
+def fragmentacao():        
     # Read the CSV file into a DataFrame
     df = pd.read_csv(pasta_logs, delimiter=';')
 
@@ -32,4 +32,4 @@ def fragmentacao():
     # Save the figure
     fig = ax.get_figure()
     # fig.savefig(f'./plot_images/fragmentation.png')
-    fig.savefig(f'./plot_images/{NAME_FORMAT}.png')
+    fig.savefig(f'./plotagem/plot_images/{NAME_FORMAT}.png')

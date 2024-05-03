@@ -1,5 +1,5 @@
-NAME = 'docker_antigo/ubuntu24/docker_new_debian_new/'
-PASTA_LOGS = f'./registros de monitoramento dos testes de envelhecimento/testes_pre_finais/{NAME}'
+NAME = 'docker_antigo/ubuntu24/docker_new_debian_new'
+PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/testes_pre_finais/{NAME}'
 
 NAME_FORMAT = 'frag_' + NAME.replace('/', '_')
 
@@ -101,8 +101,13 @@ xen = {
         f'{PASTA_LOGS}/xen_monitoring-xenconsoled.csv'
 }
 
-pod = {
+# vs 20
+dock_antigo = {
+    # RUNS
+    'runs':
+        f'{PASTA_LOGS}/runs.csv',
         
+    # --------------------- MACHINE PROCESS
     'cpu':
         f'{PASTA_LOGS}/cpu.csv',
         
@@ -115,6 +120,7 @@ pod = {
     'process':
         f'{PASTA_LOGS}/process.csv',
         
+    # ------------------- SERVICES PROCESS
     'nginx':
         f'{PASTA_LOGS}/nginx.csv',
         
@@ -127,15 +133,105 @@ pod = {
     'redis':
         f'{PASTA_LOGS}/redis.csv',
         
+    # ------------------- CONTAINER PROCESS
+    'docker': 
+        f'{PASTA_LOGS}/docker.csv',
+        
+    'dockerd': 
+        f'{PASTA_LOGS}/dockerd.csv',
+        
+    'containerd': 
+        f'{PASTA_LOGS}/containerd.csv',
+        
+    'containerd-shim': 
+        f'{PASTA_LOGS}/containerd-shim.csv',
+}
+
+# vs 26
+dock_novo = {
+     # RUNS
     'runs':
         f'{PASTA_LOGS}/runs.csv',
         
-    'conmon':
-        f'{PASTA_LOGS}/conmon.csv',
+    # --------------------- MACHINE PROCESS
+    'cpu':
+        f'{PASTA_LOGS}/cpu.csv',
         
+    'disk':
+        f'{PASTA_LOGS}/disk.csv',
+        
+    'memory':
+        f'{PASTA_LOGS}/memory.csv',
+        
+    'process':
+        f'{PASTA_LOGS}/process.csv',
+        
+    # ------------------- SERVICES PROCESS
+    'nginx':
+        f'{PASTA_LOGS}/nginx.csv',
+        
+    'postgres':
+        f'{PASTA_LOGS}/postgres.csv',
+        
+    'rabbitmq':
+        f'{PASTA_LOGS}/rabbitmq.csv',
+        
+    'redis':
+        f'{PASTA_LOGS}/redis.csv',
+        
+    # ------------------- CONTAINER PROCESS
+    'docker': 
+        f'{PASTA_LOGS}/docker.csv',
+        
+    'dockerd': 
+        f'{PASTA_LOGS}/dockerd.csv',
+        
+    'containerd': 
+        f'{PASTA_LOGS}/containerd.csv',
+        
+    'containerd-shim': 
+        f'{PASTA_LOGS}/containerd-shim.csv',
+}
+
+# vs 4.9
+pod = {
+    # RUNS
+    'runs':
+        f'{PASTA_LOGS}/runs.csv',
+        
+    # --------------------- MACHINE PROCESS
+    'cpu':
+        f'{PASTA_LOGS}/cpu.csv',
+        
+    'disk':
+        f'{PASTA_LOGS}/disk.csv',
+        
+    'memory':
+        f'{PASTA_LOGS}/memory.csv',
+        
+    'process':
+        f'{PASTA_LOGS}/process.csv',
+        
+    # ------------------- SERVICES PROCESS
+    'nginx':
+        f'{PASTA_LOGS}/nginx.csv',
+        
+    'postgres':
+        f'{PASTA_LOGS}/postgres.csv',
+        
+    'rabbitmq':
+        f'{PASTA_LOGS}/rabbitmq.csv',
+        
+    'redis':
+        f'{PASTA_LOGS}/redis.csv',
+        
+    # ------------------- CONTAINER PROCESS
     'podman':
         f'{PASTA_LOGS}/podman.csv',
         
+    'conmon':
+        f'{PASTA_LOGS}/conmon.csv',
+    
     'java':
         f'{PASTA_LOGS}/java.csv'
 }
