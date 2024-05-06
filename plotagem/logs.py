@@ -1,4 +1,4 @@
-NAME = 'docker_antigo/ubuntu24/docker_new_debian_new'
+NAME = 'podman/ubuntu24/podman_new_debian_new'
 PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/testes_pre_finais/{NAME}'
 
 NAME_FORMAT = 'frag_' + NAME.replace('/', '_')
@@ -231,7 +231,25 @@ pod = {
         
     'conmon':
         f'{PASTA_LOGS}/conmon.csv',
+        
+    'cron':
+        f'{PASTA_LOGS}/cron.csv',
+        
+    'crun':
+        f'{PASTA_LOGS}/crun.csv',
+        
+    'systemd':
+        f'{PASTA_LOGS}/systemd.csv',
     
     'java':
-        f'{PASTA_LOGS}/java.csv'
+        f'{PASTA_LOGS}/java.csv',
+        
+    'postgres_process':
+        f'{PASTA_LOGS}/postgres_process.csv',
+        
+    'mysqld':
+        f'{PASTA_LOGS}/mysqld.csv',
+        
+    'initdb':
+        f'{PASTA_LOGS}/initdb.csv',
 }

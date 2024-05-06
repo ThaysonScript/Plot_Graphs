@@ -420,12 +420,12 @@ def docker_novo():
 def podman():
     fragmentacao()
     
-    plot(
-        title="runs",
-        filename=pod['runs'], 
-        ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
-    )
+    # plot(
+    #     title="runs",
+    #     filename=pod['runs'], 
+    #     ylabel='(percentage)', 
+    #     dayfirst=True, includeColYlabel=True
+    # )
     
     plot(
         title="CPU",

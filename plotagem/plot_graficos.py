@@ -1,6 +1,7 @@
 try:
     import matplotlib.pyplot as plt
     import pandas as pd
+    import sys
     from sklearn.linear_model import LinearRegression
     
 except ImportError as e:
@@ -13,19 +14,24 @@ plt.close('all')
 def plot(filename, ylabel, datetime="date_time", title=None, separator=';', decimal_separator=",", dayfirst=False, division=1, includeColYlabel=False, cols_to_divide=[]):
     try:
         df = pd.read_csv(filename, sep=separator, decimal=decimal_separator, dayfirst=dayfirst, parse_dates=[datetime]).rename(columns={datetime: 'seconds'})
-        
-        # df['seconds'] = pd.to_datetime(df['seconds'], format='%d-%m-%Y-%H:%M:%S')
-        df['seconds'] = df['seconds'].apply(lambda x: pd.to_datetime(x, format="%d-%m-%Y-%H:%M:%S"))
-
-        df['seconds'] = (df['seconds'] - df['seconds'][0]).dt.total_seconds() / 3600
-        df = df.set_index('seconds').replace(',', '.', regex=True).apply(lambda x: pd.to_numeric(x, errors='ignore'))
-        
-        cols_to_divide = cols_to_divide if len(cols_to_divide) != 0 else df.columns
-        df[cols_to_divide] = df[cols_to_divide].div(division)
-
+    
     except ValueError:
-        print("Ignorando linha devido a data incorreta.")
+        try:
+            df = pd.read_csv(filename, sep=separator, decimal=decimal_separator, dayfirst=dayfirst, parse_dates=['time']).rename(columns={'time': 'seconds'})        
 
+        except Exception as e:
+            print("Erro ao ler o arquivo CSV:", e)
+            return None
+
+    # df['seconds'] = pd.to_datetime(df['seconds'], format='%d-%m-%Y-%H:%M:%S')
+    df['seconds'] = df['seconds'].apply(lambda x: pd.to_datetime(x, format="%d-%m-%Y-%H:%M:%S"))
+
+    df['seconds'] = (df['seconds'] - df['seconds'][0]).dt.total_seconds() / 3600
+    df = df.set_index('seconds').replace(',', '.', regex=True).apply(lambda x: pd.to_numeric(x, errors='ignore'))
+    
+    cols_to_divide = cols_to_divide if len(cols_to_divide) != 0 else df.columns
+    df[cols_to_divide] = df[cols_to_divide].div(division)
+        
     for col in df.columns:
         
         try:
@@ -55,7 +61,7 @@ def plot(filename, ylabel, datetime="date_time", title=None, separator=';', deci
             ax.plot(x, Y_pred, color='red')
             plt.show()
             fig = ax.get_figure()
-            fig.savefig(f'./plot_images/{title}-{col}.png')
+            fig.savefig(f'./plotagem/plot_images/{title}-{col}.png')
             
         except ValueError:
             print(f"Ignorando coluna '{col}' devido a erro na conversão para float.")   
