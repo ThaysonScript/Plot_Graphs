@@ -9,6 +9,23 @@ from plotagem.logs import (
 )
 from plotagem.plot_graficos import plot
 from plotagem.plot_fragmentacao import fragmentacao
+from pathlib import Path
+
+dir1 = Path("plotagem/plot_images")
+dir2 = Path("plotagem/registros de monitoramento dos testes de envelhecimento")
+
+if not dir1.exists():
+    dir1.mkdir()
+    print("Diretório 1 criado com sucesso.")
+else:
+    print('verificação de diretorio 1 feita')
+    
+if not dir2.exists():
+    dir2.mkdir()
+    print("Diretório 2 criado com sucesso.")
+    
+else:
+    print('verificação de diretorio 2 feita\n')
 
 GRAPH_NAMES = {
     # machine
