@@ -1,8 +1,9 @@
+import numpy as np
+
+
 try:
     import matplotlib.pyplot as plt
     import pandas as pd
-    import sys
-    from time import sleep
     from sklearn.linear_model import LinearRegression
     
 except ImportError as e:
@@ -12,7 +13,7 @@ except ImportError as e:
 plt.close('all')
 
 
-def plot(filename, ylabel, datetime="date_time", title=None, separator=';', decimal_separator=",", dayfirst=False, division=1, includeColYlabel=False, cols_to_divide=[]):
+def plot(filename, ylabel, datetime="date_time", title=None, separator=';', decimal_separator=",", dayfirst=False, multiply=1, division=1, includeColYlabel=False, cols_to_divide=[], cols_to_multiply=[]):
     try:
         df = pd.read_csv(filename, sep=separator, decimal=decimal_separator, dayfirst=dayfirst, parse_dates=[datetime]).rename(columns={datetime: 'seconds'})
     
@@ -23,6 +24,8 @@ def plot(filename, ylabel, datetime="date_time", title=None, separator=';', deci
         except Exception as e:
             print("Erro ao ler o arquivo CSV:", e)
             return None
+        
+    print(f'filename: {filename}')
 
     # df['seconds'] = pd.to_datetime(df['seconds'], format='%d-%m-%Y-%H:%M:%S')
     df['seconds'] = df['seconds'].apply(lambda x: pd.to_datetime(x, format="%d-%m-%Y-%H:%M:%S"))
@@ -30,11 +33,15 @@ def plot(filename, ylabel, datetime="date_time", title=None, separator=';', deci
     df['seconds'] = (df['seconds'] - df['seconds'][0]).dt.total_seconds() / 3600
     df = df.set_index('seconds').replace(',', '.', regex=True).apply(lambda x: pd.to_numeric(x, errors='ignore'))
     
+    # perform data multiplication
+    cols_to_multiply = cols_to_multiply if len(cols_to_multiply) != 0 else df.columns
+    df[cols_to_multiply] = df[cols_to_multiply].mul(multiply)
+    
+    # perform data division
     cols_to_divide = cols_to_divide if len(cols_to_divide) != 0 else df.columns
     df[cols_to_divide] = df[cols_to_divide].div(division)
         
-    for col in df.columns:
-        # try:
+    for col in df.columns:            
         col_mix = col + " " + ylabel if type(ylabel) is str and includeColYlabel else ylabel
 
         df[col] = df[col].fillna(0)
@@ -60,8 +67,6 @@ def plot(filename, ylabel, datetime="date_time", title=None, separator=';', deci
         # Adicionar a linha da regressão
         ax.plot(x, Y_pred, color='red')
         plt.show()
+        
         fig = ax.get_figure()
         fig.savefig(f'./plotagem/plot_images/{title}-{col}.png')
-            
-        # except ValueError:
-        #     print(f"Ignorando coluna '{col}' devido a erro na conversão para float.")   

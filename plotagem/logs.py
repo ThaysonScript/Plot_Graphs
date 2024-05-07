@@ -1,5 +1,5 @@
-NAME = 'podman/ubuntu24/podman_new_debian_new'
-PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/testes_pre_finais/{NAME}'
+NAME = 'logs_sem_erro_1GB'
+PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/kvm/{NAME}'
 
 NAME_FORMAT = 'frag_' + NAME.replace('/', '_')
 

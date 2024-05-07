@@ -1,4 +1,6 @@
-import sys
+from plotagem.plot_graficos import plot
+from plotagem.plot_fragmentacao import fragmentacao
+from pathlib import Path
 from plotagem.logs import (
     vbox,
     kvm,
@@ -7,9 +9,6 @@ from plotagem.logs import (
     dock_novo,
     pod
 )
-from plotagem.plot_graficos import plot
-from plotagem.plot_fragmentacao import fragmentacao
-from pathlib import Path
 
 dir1 = Path("plotagem/plot_images")
 dir2 = Path("plotagem/registros de monitoramento dos testes de envelhecimento")
@@ -33,6 +32,26 @@ GRAPH_NAMES = {
     'memory': 'memory',
     'disk': 'disk',
     'zumbie_process': 'zumbie_process',
+    
+    # server response time
+    'response_time': 'response_time',
+    
+    # virtualbox
+    'vbox': 'vbox',
+    'vbox_headless': 'vbox_headless',
+    'vbox_svc': 'vbox_svc',
+    'vbox_xpcomipcd': 'vbox_xpcomipcd',
+    
+    # kvm
+    'kvm': 'kvm',
+    'qemu': 'qemu',
+    'libvirt': 'libvirt',
+    
+    # xen
+    'xen': 'xen',
+    
+    # lxc
+    'lxc': 'lxc',
     
     # docker
     'docker': 'docker',
@@ -87,8 +106,6 @@ def labels(L_name='none', columns_selection=['all'], metrics='KB', string=False)
             
     return result_labels
         
-    
-
 
 # ------------------------------------------------ VIRTUALIZADORES ------------------------------------------- #
 def vbox_plots():
@@ -170,7 +187,7 @@ def vbox_plots():
         title="Server response time", 
         filename=vbox['server_response_time_monitoring'], 
         ylabel='Response time(s)', 
-        division=1000, dayfirst=True
+        multiply=1000, dayfirst=True
     )
     
     
@@ -194,7 +211,7 @@ def kvm_plots():
     plot(
         title="Zumbis", 
         filename=kvm['monitoring_zumbies'], 
-        ylabel='Zumbis processes(qtt)', 
+        ylabel='Zumbies processes(qtt)', 
         dayfirst=True
     )
 
@@ -204,13 +221,6 @@ def kvm_plots():
         ylabel='(MB)', 
         dayfirst=True, 
         division=1024, includeColYlabel=True
-    )
-
-    plot(
-        title="Server response time", 
-        filename=kvm['server_response_time_monitoring'], 
-        ylabel='Response time(s)', 
-        division=1000, dayfirst=True
     )
     
     plot(
@@ -231,7 +241,7 @@ def kvm_plots():
     plot(
         title="Process - kvm_libvirt_service", 
         filename=kvm['kvm_libvirtd_service'], 
-        cols_to_divide=["vmrss","vsz","swap"],
+        cols_to_divide=["rss","vsz","swap"],
         ylabel={
             'cpu': 'CPU usage (percentage)',
             "vmrss": "Physical memory usage(MB)",
@@ -242,6 +252,13 @@ def kvm_plots():
         division=1024, dayfirst=True
     )
    
+    plot(
+        title="Server response time", 
+        filename=kvm['server_response_time_monitoring'], 
+        ylabel='Response time(s)', 
+        multiply=1000, dayfirst=True
+    )
+
 
 def xen_plots():
     fragmentacao()
@@ -279,7 +296,7 @@ def xen_plots():
         title="Server response time", 
         filename=xen['server_response_time_monitoring'], 
         ylabel='Response time(s)', 
-        division=1000, dayfirst=True
+        multiply=1000, dayfirst=True
     ) 
     
     plot(
