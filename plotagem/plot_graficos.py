@@ -2,6 +2,7 @@ try:
     import matplotlib.pyplot as plt
     import pandas as pd
     import sys
+    from time import sleep
     from sklearn.linear_model import LinearRegression
     
 except ImportError as e:
@@ -33,35 +34,34 @@ def plot(filename, ylabel, datetime="date_time", title=None, separator=';', deci
     df[cols_to_divide] = df[cols_to_divide].div(division)
         
     for col in df.columns:
-        
-        try:
-            col_mix = col + " " + ylabel if type(ylabel) is str and includeColYlabel else ylabel
+        # try:
+        col_mix = col + " " + ylabel if type(ylabel) is str and includeColYlabel else ylabel
 
-            df[col] = df[col].fillna(0)
+        df[col] = df[col].fillna(0)
 
-            x = df.index.to_numpy().reshape((-1, 1))
-            y = df[col].to_numpy().reshape((-1, 1))
+        x = df.index.to_numpy().reshape((-1, 1))
+        y = df[col].to_numpy().reshape((-1, 1))
 
-            model = LinearRegression()
-            model.fit(x, y)
+        model = LinearRegression()
+        model.fit(x, y)
 
-            Y_pred = model.predict(x)
+        Y_pred = model.predict(x)
 
-            ax = df.plot(
-                y=col,
-                legend=0,
-                xlabel='Time(h)',
-                ylabel=col_mix if type(ylabel) is str else ylabel[col] if type(ylabel) is dict and col in ylabel else col,
-                title=title if type(title) is str else title[col] if type(title) is dict and col in title else col,
-                figsize=(10,5),
-                style='k',
-            )
+        ax = df.plot(
+            y=col,
+            legend=0,
+            xlabel='Time(h)',
+            ylabel=col_mix if type(ylabel) is str else ylabel[col] if type(ylabel) is dict and col in ylabel else col,
+            title=title if type(title) is str else title[col] if type(title) is dict and col in title else col,
+            figsize=(10,5),
+            style='k',
+        )
 
-            # Adicionar a linha da regressão
-            ax.plot(x, Y_pred, color='red')
-            plt.show()
-            fig = ax.get_figure()
-            fig.savefig(f'./plotagem/plot_images/{title}-{col}.png')
+        # Adicionar a linha da regressão
+        ax.plot(x, Y_pred, color='red')
+        plt.show()
+        fig = ax.get_figure()
+        fig.savefig(f'./plotagem/plot_images/{title}-{col}.png')
             
-        except ValueError:
-            print(f"Ignorando coluna '{col}' devido a erro na conversão para float.")   
+        # except ValueError:
+        #     print(f"Ignorando coluna '{col}' devido a erro na conversão para float.")   

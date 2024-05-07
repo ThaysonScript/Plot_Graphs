@@ -7,9 +7,8 @@ except ImportError as e:
     exit(1)
 
 pasta_logs = f'{PASTA_LOGS}/fragmentation.csv'
-minimum_process_occurrences = 15
 
-def fragmentacao():        
+def fragmentacao(minimum_process_occurrences=1):        
     # Read the CSV file into a DataFrame
     df = pd.read_csv(pasta_logs, delimiter=';')
 
@@ -27,7 +26,7 @@ def fragmentacao():
     df_filtered = df[df['process_occurrences'] >= minimum_process_occurrences]
 
     df_pivot = df_filtered.pivot(columns='process', values='process_occurrences')
-    ax = df_pivot.plot(ylabel='Process occurrences', xlabel='Time(H)')
+    ax = df_pivot.plot(ylabel='Process occurrences (qtt)', xlabel='Time(H)')
 
     # Save the figure
     fig = ax.get_figure()

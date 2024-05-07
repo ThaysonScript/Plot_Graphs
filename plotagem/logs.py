@@ -252,4 +252,7 @@ pod = {
         
     'initdb':
         f'{PASTA_LOGS}/initdb.csv',
+        
+    'beam.smp':
+        f'{PASTA_LOGS}/beam.smp.csv'
 }

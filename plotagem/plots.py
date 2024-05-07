@@ -1,3 +1,4 @@
+import sys
 from plotagem.logs import (
     vbox,
     kvm,
@@ -8,6 +9,68 @@ from plotagem.logs import (
 )
 from plotagem.plot_graficos import plot
 from plotagem.plot_fragmentacao import fragmentacao
+
+GRAPH_NAMES = {
+    # machine
+    'cpu': 'cpu',
+    'memory': 'memory',
+    'disk': 'disk',
+    'zumbie_process': 'zumbie_process',
+    
+    # docker
+    'docker': 'docker',
+    'dockerd': 'dockerd',
+    'containerd': 'containerd',
+    'containerd-shim': 'containerd-shim',
+    'runc': 'runc',
+    
+    # podman
+    'podman': 'podman',
+    'systemd': 'systemd',
+    'conmon': 'conmon',
+    'cron': 'cron',
+    'crun': 'crun',
+    
+    # images
+    'nginx': 'nginx',
+    'postgres': 'postgres',
+    'rabbitmq': 'rabbitmq',
+    'redis': 'redis',
+    
+    # image - process
+    'runs': 'runs',
+    'beam.smp': 'beam.smp',
+    'initdb': 'initdb',
+    'java': 'java',
+    'mysqld': 'mysqld',
+    'postgres_process': 'postgres_process',
+}
+
+def labels(L_name='none', columns_selection=['all'], metrics='KB', string=False):
+    result_labels = {}
+    
+    LABELS = {
+        'cpu': f'{L_name} - Cpu Usage ({metrics})',
+        'mem': f'{L_name} - Memory Usage ({metrics})',
+        'rss': f'{L_name} - Memory rss Used ({metrics})',
+        'vsz': f'{L_name} - Memory vsz Used ({metrics})',
+        'threads': f'{L_name} - Threads Used ({metrics})',
+        'swap': f'{L_name} - Memory Swap Used ({metrics})'
+    }
+    
+    if columns_selection == ['all']:
+        return LABELS
+    
+    for column in columns_selection:
+        if string == True:
+            return LABELS[column].replace(column, '')
+        
+        if column in LABELS:
+            result_labels[column] = LABELS[column]
+            
+    return result_labels
+        
+    
 
 
 # ------------------------------------------------ VIRTUALIZADORES ------------------------------------------- #
@@ -345,12 +408,12 @@ def docker_antigo():
 def docker_novo():
     fragmentacao()
     
-    plot(
-        title="runs",
-        filename=dock_novo['runs'], 
-        ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
-    )
+    # plot(
+    #     title="runs",
+    #     filename=dock_novo['runs'], 
+    #     ylabel='(percentage)', 
+    #     dayfirst=True, includeColYlabel=True
+    # )
     
     plot(
         title="CPU",
@@ -418,7 +481,7 @@ def docker_novo():
 
 
 def podman():
-    fragmentacao()
+    fragmentacao(10)
     
     # plot(
     #     title="runs",
@@ -427,6 +490,7 @@ def podman():
     #     dayfirst=True, includeColYlabel=True
     # )
     
+    # --------------------- MACHINE RESOURCES
     plot(
         title="CPU",
         filename=pod['cpu'], 
@@ -435,72 +499,148 @@ def podman():
     )
 
     plot(
+        title="Memory", 
+        filename=pod['memory'], 
+        ylabel=labels(L_name=GRAPH_NAMES['memory'], metrics='(GB)'),
+        dayfirst=True, 
+        division=1048576, includeColYlabel=True
+    )
+    
+    plot(
         title="Disk", 
         filename=pod['disk'], 
         ylabel='Disk usage (GB)', 
         dayfirst=True, division=1048576
     )
-
+    
     plot(
         title="Zumbis", 
         filename=pod['process'], 
         ylabel='Zumbis processes(qtt)', 
         dayfirst=True
     )
-
-    plot(
-        title="Memory", 
-        filename=pod['memory'], 
-        ylabel='(MB)', 
-        dayfirst=True, 
-        division=1024, includeColYlabel=True
-    )
     
+    # -------------------------- IMAGE PROCESS
     plot(
         title="nginx",
         filename=pod['nginx'], 
         ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
     )
     
     plot(
         title="postgres",
         filename=pod['postgres'], 
         ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
     )
     
     plot(
         title="rabbitmq",
         filename=pod['rabbitmq'], 
         ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
     )
     
     plot(
         title="redis",
         filename=pod['redis'], 
         ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
+    )
+    
+    # ----------------------------- PODMAN PROCESS
+    plot(
+        title="podman",
+        filename=pod['podman'], 
+        ylabel=labels(L_name=GRAPH_NAMES['podman'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
     )
     
     plot(
         title="conmon",
         filename=pod['conmon'], 
-        ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        ylabel=labels(L_name=GRAPH_NAMES['conmon'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
     )
     
     plot(
-        title="podman",
-        filename=pod['podman'], 
-        ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        title="cron",
+        filename=pod['cron'], 
+        ylabel=labels(L_name=GRAPH_NAMES['cron'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
     )
     
+    plot(
+        title="crun",
+        filename=pod['crun'], 
+        ylabel=labels(L_name=GRAPH_NAMES['crun'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    # -------------------------- CONTAINER PROCESS
     plot(
         title="java",
         filename=pod['java'], 
-        ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
-    ) 
+        ylabel=labels(L_name=GRAPH_NAMES['java'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="postgres_process",
+        filename=pod['postgres_process'], 
+        ylabel=labels(L_name=GRAPH_NAMES['postgres_process'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="beam.smp",
+        filename=pod['beam.smp'], 
+        ylabel=labels(L_name=GRAPH_NAMES['beam.smp'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="mysqld",
+        filename=pod['mysqld'], 
+        ylabel=labels(L_name=GRAPH_NAMES['mysqld'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="initdb",
+        filename=pod['initdb'], 
+        ylabel=labels(L_name=GRAPH_NAMES['initdb'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="systemd",
+        filename=pod['systemd'], 
+        ylabel=labels(L_name=GRAPH_NAMES['systemd'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
