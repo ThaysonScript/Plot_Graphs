@@ -1,4 +1,4 @@
-NAME = 'docker_new_debian_new'
+NAME = 'docker_old_ubuntu_old'
 PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/logs/{NAME}'
 
 NAME_FORMAT = 'frag_' + NAME.replace('/', '_')

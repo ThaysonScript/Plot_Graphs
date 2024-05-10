@@ -25,7 +25,13 @@ def fragmentacao(minimum_process_occurrences=1):
 
     df_filtered = df[df['process_occurrences'] >= minimum_process_occurrences]
 
-    df_pivot = df_filtered.pivot(columns='process', values='process_occurrences')
+    try:
+        df_pivot = df_filtered.pivot(columns='process', values='process_occurrences')
+        
+    except Exception:
+        df_pivot = df_filtered.pivot_table(index='time_passed', columns='process', values='process_occurrences', aggfunc='sum')
+    
+    
     ax = df_pivot.plot(ylabel='Process occurrences (qtt)', xlabel='Time(H)')
 
     # Save the figure
