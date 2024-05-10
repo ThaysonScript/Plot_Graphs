@@ -1,5 +1,5 @@
-NAME = 'logs_sem_erro_1GB'
-PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/kvm/{NAME}'
+NAME = 'docker_new_debian_new'
+PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/logs/{NAME}'
 
 NAME_FORMAT = 'frag_' + NAME.replace('/', '_')
 
@@ -111,16 +111,16 @@ dock_antigo = {
     'cpu':
         f'{PASTA_LOGS}/cpu.csv',
         
-    'disk':
-        f'{PASTA_LOGS}/disk.csv',
-        
     'memory':
         f'{PASTA_LOGS}/memory.csv',
+        
+    'disk':
+        f'{PASTA_LOGS}/disk.csv',
         
     'process':
         f'{PASTA_LOGS}/process.csv',
         
-    # ------------------- SERVICES PROCESS
+    # ------------------- IMAGE PROCESS
     'nginx':
         f'{PASTA_LOGS}/nginx.csv',
         
@@ -145,11 +145,39 @@ dock_antigo = {
         
     'containerd-shim': 
         f'{PASTA_LOGS}/containerd-shim.csv',
+        
+    'docker-proxy': 
+        f'{PASTA_LOGS}/docker-proxy.csv',
+        
+    'runc': 
+        f'{PASTA_LOGS}/runc.csv',
+        
+    'containerd': 
+        f'{PASTA_LOGS}/containerd.csv',
+        
+    'containerd-shim': 
+        f'{PASTA_LOGS}/containerd-shim.csv',
+        
+    # -------------------- SERVICE PROCESS
+    'java': 
+        f'{PASTA_LOGS}/java.csv',
+        
+    'beam.smp': 
+        f'{PASTA_LOGS}/beam.smp.csv',
+        
+    'initdb': 
+        f'{PASTA_LOGS}/initdb.csv',
+        
+    'mysqld': 
+        f'{PASTA_LOGS}/mysqld.csv',
+        
+    'postgres_process': 
+        f'{PASTA_LOGS}/postgres_process.csv'
 }
 
 # vs 26
 dock_novo = {
-     # RUNS
+    # RUNS
     'runs':
         f'{PASTA_LOGS}/runs.csv',
         
@@ -157,16 +185,16 @@ dock_novo = {
     'cpu':
         f'{PASTA_LOGS}/cpu.csv',
         
-    'disk':
-        f'{PASTA_LOGS}/disk.csv',
-        
     'memory':
         f'{PASTA_LOGS}/memory.csv',
+        
+    'disk':
+        f'{PASTA_LOGS}/disk.csv',
         
     'process':
         f'{PASTA_LOGS}/process.csv',
         
-    # ------------------- SERVICES PROCESS
+    # ------------------- IMAGE PROCESS
     'nginx':
         f'{PASTA_LOGS}/nginx.csv',
         
@@ -191,6 +219,34 @@ dock_novo = {
         
     'containerd-shim': 
         f'{PASTA_LOGS}/containerd-shim.csv',
+        
+    'docker-proxy': 
+        f'{PASTA_LOGS}/docker-proxy.csv',
+        
+    'runc': 
+        f'{PASTA_LOGS}/runc.csv',
+        
+    'containerd': 
+        f'{PASTA_LOGS}/containerd.csv',
+        
+    'containerd-shim': 
+        f'{PASTA_LOGS}/containerd-shim.csv',
+        
+    # -------------------- SERVICE PROCESS
+    'java': 
+        f'{PASTA_LOGS}/java.csv',
+        
+    'beam.smp': 
+        f'{PASTA_LOGS}/beam.smp.csv',
+        
+    'initdb': 
+        f'{PASTA_LOGS}/initdb.csv',
+        
+    'mysqld': 
+        f'{PASTA_LOGS}/mysqld.csv',
+        
+    'postgres_process': 
+        f'{PASTA_LOGS}/postgres_process.csv'
 }
 
 # vs 4.9
@@ -212,7 +268,7 @@ pod = {
     'process':
         f'{PASTA_LOGS}/process.csv',
         
-    # ------------------- SERVICES PROCESS
+    # ------------------- IMAGE PROCESS
     'nginx':
         f'{PASTA_LOGS}/nginx.csv',
         
@@ -241,6 +297,7 @@ pod = {
     'systemd':
         f'{PASTA_LOGS}/systemd.csv',
     
+    # -------------------- SERVICE PROCESS
     'java':
         f'{PASTA_LOGS}/java.csv',
         

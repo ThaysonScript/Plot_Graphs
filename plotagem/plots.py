@@ -10,6 +10,8 @@ from plotagem.logs import (
     pod
 )
 
+MINIMUM_PROCESS_OCCURRENCES :int = 10
+
 dir1 = Path("plotagem/plot_images")
 dir2 = Path("plotagem/registros de monitoramento dos testes de envelhecimento")
 
@@ -58,6 +60,7 @@ GRAPH_NAMES = {
     'dockerd': 'dockerd',
     'containerd': 'containerd',
     'containerd-shim': 'containerd-shim',
+    'docker-proxy': 'docker-proxy',
     'runc': 'runc',
     
     # podman
@@ -109,7 +112,7 @@ def labels(L_name='none', columns_selection=['all'], metrics='KB', string=False)
 
 # ------------------------------------------------ VIRTUALIZADORES ------------------------------------------- #
 def vbox_plots():
-    fragmentacao()
+    fragmentacao(MINIMUM_PROCESS_OCCURRENCES)
     
     plot(
     title="CPU",
@@ -122,7 +125,7 @@ def vbox_plots():
         title="Disk", 
         filename=vbox['monitoring_disks'], 
         ylabel='Disk usage (GB)', 
-        dayfirst=True, division=1048576
+        dayfirst=True, division=(1024**2)
     )
 
     plot(
@@ -192,7 +195,7 @@ def vbox_plots():
     
     
 def kvm_plots():
-    fragmentacao()
+    fragmentacao(MINIMUM_PROCESS_OCCURRENCES)
     
     plot(
     title="CPU",
@@ -205,7 +208,7 @@ def kvm_plots():
         title="Disk", 
         filename=kvm['monitoring_disks'], 
         ylabel='Disk usage (GB)', 
-        dayfirst=True, division=1048576
+        dayfirst=True, division=(1024**2)
     )
 
     plot(
@@ -255,13 +258,13 @@ def kvm_plots():
     plot(
         title="Server response time", 
         filename=kvm['server_response_time_monitoring'], 
-        ylabel='Response time(s)', 
+        ylabel='Response time (seconds)', 
         multiply=1000, dayfirst=True
     )
 
 
 def xen_plots():
-    fragmentacao()
+    fragmentacao(MINIMUM_PROCESS_OCCURRENCES)
     
     plot(
     title="CPU",
@@ -274,7 +277,7 @@ def xen_plots():
         title="Disk", 
         filename=xen['monitoring_disks'], 
         ylabel='Disk usage (GB)', 
-        dayfirst=True, division=1048576
+        dayfirst=True, division=(1024**2)
     )
 
     plot(
@@ -292,12 +295,6 @@ def xen_plots():
         division=1024, includeColYlabel=True
     )
 
-    plot(
-        title="Server response time", 
-        filename=xen['server_response_time_monitoring'], 
-        ylabel='Response time(s)', 
-        multiply=1000, dayfirst=True
-    ) 
     
     plot(
         title="Process - xen_monitoring_oxenstored", 
@@ -357,15 +354,22 @@ def xen_plots():
         division=1024, dayfirst=True
     )
 
+    plot(
+        title="Server response time", 
+        filename=xen['server_response_time_monitoring'], 
+        ylabel='Response time (seconds)', 
+        multiply=1000, dayfirst=True
+    ) 
+
 
 def lxc_plots():
-    fragmentacao()
+    fragmentacao(MINIMUM_PROCESS_OCCURRENCES)
     pass
 
 
 # ------------------------------------------------ CONTAINERS ------------------------------------------- #
 def docker_antigo():
-    fragmentacao()
+    fragmentacao(MINIMUM_PROCESS_OCCURRENCES)
     
     # plot(
     #     title="runs",
@@ -385,7 +389,7 @@ def docker_antigo():
         title="Disk", 
         filename=dock_antigo['disk'], 
         ylabel='Disk usage (GB)', 
-        dayfirst=True, division=1048576
+        dayfirst=True, division=(1024**2)
     )
 
     plot(
@@ -440,7 +444,7 @@ def docker_antigo():
 
 
 def docker_novo():
-    fragmentacao()
+    fragmentacao(MINIMUM_PROCESS_OCCURRENCES)
     
     # plot(
     #     title="runs",
@@ -449,25 +453,12 @@ def docker_novo():
     #     dayfirst=True, includeColYlabel=True
     # )
     
+    # --------------------- MACHINE RESOURCES
     plot(
         title="CPU",
         filename=dock_novo['cpu'], 
         ylabel='(percentage)', 
         dayfirst=True, includeColYlabel=True
-    )
-
-    plot(
-        title="Disk", 
-        filename=dock_novo['disk'], 
-        ylabel='Disk usage (GB)', 
-        dayfirst=True, division=1048576
-    )
-
-    plot(
-        title="Zumbis", 
-        filename=dock_novo['process'], 
-        ylabel='Zumbis processes(qtt)', 
-        dayfirst=True
     )
 
     plot(
@@ -479,43 +470,147 @@ def docker_novo():
     )
     
     plot(
+        title="Disk", 
+        filename=dock_novo['disk'], 
+        ylabel='Disk usage (GB)', 
+        dayfirst=True, division=(1024**2)
+    )
+
+    plot(
+        title="Zumbis", 
+        filename=dock_novo['process'], 
+        ylabel='Zumbis processes(qtt)', 
+        dayfirst=True
+    )
+
+    # -------------------------- CONTAINER PROCESS
+    plot(
         title="nginx",
         filename=dock_novo['nginx'], 
         ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
     )
     
     plot(
         title="postgres",
         filename=dock_novo['postgres'], 
         ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
     )
     
     plot(
         title="rabbitmq",
         filename=dock_novo['rabbitmq'], 
         ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
     )
     
     plot(
         title="redis",
         filename=dock_novo['redis'], 
         ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
+    )
+    
+    # ----------------------------- DOCKER PROCESS
+    plot(
+        title="docker_novo - process",
+        filename=dock_novo['docker'], 
+        ylabel=labels(L_name=GRAPH_NAMES['docker'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
     )
     
     plot(
-        title="docker_novo",
-        filename=dock_novo['docker_novo'], 
-        ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        title="dockerd_novo - process",
+        filename=dock_novo['dockerd'], 
+        ylabel=labels(L_name=GRAPH_NAMES['dockerd'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="containerd_novo - process",
+        filename=dock_novo['containerd'], 
+        ylabel=labels(L_name=GRAPH_NAMES['containerd'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="containerd-shim_novo - process",
+        filename=dock_novo['containerd-shim'], 
+        ylabel=labels(L_name=GRAPH_NAMES['containerd-shim'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="docker-proxy_novo - process",
+        filename=dock_novo['docker-proxy'], 
+        ylabel=labels(L_name=GRAPH_NAMES['docker-proxy'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    # -------------------------- IMAGE PROCESS
+    plot(
+        title="java",
+        filename=dock_novo['java'], 
+        ylabel=labels(L_name=GRAPH_NAMES['java'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="postgres_process",
+        filename=dock_novo['postgres_process'], 
+        ylabel=labels(L_name=GRAPH_NAMES['postgres_process'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="beam.smp",
+        filename=dock_novo['beam.smp'], 
+        ylabel=labels(L_name=GRAPH_NAMES['beam.smp'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="mysqld",
+        filename=dock_novo['mysqld'], 
+        ylabel=labels(L_name=GRAPH_NAMES['mysqld'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="initdb",
+        filename=dock_novo['initdb'], 
+        ylabel=labels(L_name=GRAPH_NAMES['initdb'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
     )
 
 
 def podman():
-    fragmentacao(10)
+    fragmentacao(MINIMUM_PROCESS_OCCURRENCES)
     
     # plot(
     #     title="runs",
@@ -535,16 +630,16 @@ def podman():
     plot(
         title="Memory", 
         filename=pod['memory'], 
-        ylabel=labels(L_name=GRAPH_NAMES['memory'], metrics='(GB)'),
+        ylabel=labels(L_name=GRAPH_NAMES['memory'], metrics='GB'),
         dayfirst=True, 
-        division=1048576, includeColYlabel=True
+        division=(1024**2), includeColYlabel=True
     )
     
     plot(
         title="Disk", 
         filename=pod['disk'], 
         ylabel='Disk usage (GB)', 
-        dayfirst=True, division=1048576
+        dayfirst=True, division=(1024**2)
     )
     
     plot(
@@ -554,7 +649,7 @@ def podman():
         dayfirst=True
     )
     
-    # -------------------------- IMAGE PROCESS
+    # -------------------------- CONTAINER PROCESS
     plot(
         title="nginx",
         filename=pod['nginx'], 
@@ -606,14 +701,14 @@ def podman():
         division=1024
     )
     
-    plot(
-        title="cron",
-        filename=pod['cron'], 
-        ylabel=labels(L_name=GRAPH_NAMES['cron'], metrics='MB'),
-        dayfirst=True, includeColYlabel=True,
-        cols_to_divide=['rss', 'vsz', 'swap'],
-        division=1024
-    )
+    # plot(
+    #     title="cron",
+    #     filename=pod['cron'], 
+    #     ylabel=labels(L_name=GRAPH_NAMES['cron'], metrics='MB'),
+    #     dayfirst=True, includeColYlabel=True,
+    #     cols_to_divide=['rss', 'vsz', 'swap'],
+    #     division=1024
+    # )
     
     plot(
         title="crun",
@@ -624,7 +719,16 @@ def podman():
         division=1024
     )
     
-    # -------------------------- CONTAINER PROCESS
+    plot(
+        title="systemd",
+        filename=pod['systemd'], 
+        ylabel=labels(L_name=GRAPH_NAMES['systemd'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    # -------------------------- IMAGE PROCESS
     plot(
         title="java",
         filename=pod['java'], 
@@ -670,11 +774,3 @@ def podman():
         division=1024
     )
     
-    plot(
-        title="systemd",
-        filename=pod['systemd'], 
-        ylabel=labels(L_name=GRAPH_NAMES['systemd'], metrics='MB'),
-        dayfirst=True, includeColYlabel=True,
-        cols_to_divide=['rss', 'vsz', 'swap'],
-        division=1024
-    )
