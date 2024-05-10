@@ -158,6 +158,9 @@ dock_antigo = {
     'containerd-shim': 
         f'{PASTA_LOGS}/containerd-shim.csv',
         
+    'runc': 
+        f'{PASTA_LOGS}/runc.csv',
+        
     # -------------------- SERVICE PROCESS
     'java': 
         f'{PASTA_LOGS}/java.csv',
@@ -231,6 +234,9 @@ dock_novo = {
         
     'containerd-shim': 
         f'{PASTA_LOGS}/containerd-shim.csv',
+        
+    'runc': 
+        f'{PASTA_LOGS}/runc.csv',
         
     # -------------------- SERVICE PROCESS
     'java': 

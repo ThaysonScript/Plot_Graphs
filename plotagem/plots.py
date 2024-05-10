@@ -373,11 +373,12 @@ def docker_antigo():
     
     # plot(
     #     title="runs",
-    #     filename=dock_antigo['runs'], 
-    #     ylabel='(stats)',
+    #     filename=dock_novo['runs'], 
+    #     ylabel='(percentage)', 
     #     dayfirst=True, includeColYlabel=True
     # )
     
+    # --------------------- MACHINE RESOURCES
     plot(
         title="CPU",
         filename=dock_antigo['cpu'], 
@@ -385,6 +386,14 @@ def docker_antigo():
         dayfirst=True, includeColYlabel=True
     )
 
+    plot(
+        title="Memory", 
+        filename=dock_antigo['memory'], 
+        ylabel='(MB)', 
+        dayfirst=True, 
+        division=1024, includeColYlabel=True
+    )
+    
     plot(
         title="Disk", 
         filename=dock_antigo['disk'], 
@@ -399,47 +408,138 @@ def docker_antigo():
         dayfirst=True
     )
 
-    plot(
-        title="Memory", 
-        filename=dock_antigo['memory'], 
-        ylabel='(MB)', 
-        dayfirst=True, 
-        division=1024, includeColYlabel=True
-    )
-    
+    # -------------------------- CONTAINER PROCESS
     plot(
         title="nginx",
         filename=dock_antigo['nginx'], 
-        ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        ylabel='(seconds)', 
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
     )
     
     plot(
         title="postgres",
         filename=dock_antigo['postgres'], 
-        ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        ylabel='(seconds)', 
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
     )
     
     plot(
         title="rabbitmq",
         filename=dock_antigo['rabbitmq'], 
-        ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        ylabel='(seconds)', 
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
     )
     
     plot(
         title="redis",
         filename=dock_antigo['redis'], 
-        ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        ylabel='(seconds)', 
+        dayfirst=True, includeColYlabel=True,
+        division=1e+9
+    )
+    
+    # ----------------------------- DOCKER PROCESS
+    plot(
+        title="docker_antigo - process",
+        filename=dock_antigo['docker'], 
+        ylabel=labels(L_name=GRAPH_NAMES['docker'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
     )
     
     plot(
-        title="docker_antigo",
-        filename=dock_antigo['docker_antigo'], 
-        ylabel='(percentage)', 
-        dayfirst=True, includeColYlabel=True
+        title="dockerd_antigo - process",
+        filename=dock_antigo['dockerd'], 
+        ylabel=labels(L_name=GRAPH_NAMES['dockerd'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="containerd_antigo - process",
+        filename=dock_antigo['containerd'], 
+        ylabel=labels(L_name=GRAPH_NAMES['containerd'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="containerd-shim_antigo - process",
+        filename=dock_antigo['containerd-shim'], 
+        ylabel=labels(L_name=GRAPH_NAMES['containerd-shim'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="docker-proxy_antigo - process",
+        filename=dock_antigo['docker-proxy'], 
+        ylabel=labels(L_name=GRAPH_NAMES['docker-proxy'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="runc_novo - process",
+        filename=dock_antigo['runc'], 
+        ylabel=labels(L_name=GRAPH_NAMES['runc'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    # -------------------------- IMAGE PROCESS
+    plot(
+        title="java",
+        filename=dock_antigo['java'], 
+        ylabel=labels(L_name=GRAPH_NAMES['java'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="postgres_process",
+        filename=dock_antigo['postgres_process'], 
+        ylabel=labels(L_name=GRAPH_NAMES['postgres_process'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="beam.smp",
+        filename=dock_antigo['beam.smp'], 
+        ylabel=labels(L_name=GRAPH_NAMES['beam.smp'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="mysqld",
+        filename=dock_antigo['mysqld'], 
+        ylabel=labels(L_name=GRAPH_NAMES['mysqld'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="initdb",
+        filename=dock_antigo['initdb'], 
+        ylabel=labels(L_name=GRAPH_NAMES['initdb'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
     )
 
 
@@ -487,7 +587,7 @@ def docker_novo():
     plot(
         title="nginx",
         filename=dock_novo['nginx'], 
-        ylabel='(percentage)', 
+        ylabel='(seconds)', 
         dayfirst=True, includeColYlabel=True,
         division=1e+9
     )
@@ -495,7 +595,7 @@ def docker_novo():
     plot(
         title="postgres",
         filename=dock_novo['postgres'], 
-        ylabel='(percentage)', 
+        ylabel='(seconds)', 
         dayfirst=True, includeColYlabel=True,
         division=1e+9
     )
@@ -503,7 +603,7 @@ def docker_novo():
     plot(
         title="rabbitmq",
         filename=dock_novo['rabbitmq'], 
-        ylabel='(percentage)', 
+        ylabel='(seconds)', 
         dayfirst=True, includeColYlabel=True,
         division=1e+9
     )
@@ -511,7 +611,7 @@ def docker_novo():
     plot(
         title="redis",
         filename=dock_novo['redis'], 
-        ylabel='(percentage)', 
+        ylabel='(seconds)', 
         dayfirst=True, includeColYlabel=True,
         division=1e+9
     )
@@ -557,6 +657,15 @@ def docker_novo():
         title="docker-proxy_novo - process",
         filename=dock_novo['docker-proxy'], 
         ylabel=labels(L_name=GRAPH_NAMES['docker-proxy'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
+    
+    plot(
+        title="runc_novo - process",
+        filename=dock_novo['runc'], 
+        ylabel=labels(L_name=GRAPH_NAMES['runc'], metrics='MB'),
         dayfirst=True, includeColYlabel=True,
         cols_to_divide=['rss', 'vsz', 'swap'],
         division=1024
@@ -653,7 +762,7 @@ def podman():
     plot(
         title="nginx",
         filename=pod['nginx'], 
-        ylabel='(percentage)', 
+        ylabel='(seconds)', 
         dayfirst=True, includeColYlabel=True,
         division=1e+9
     )
@@ -661,7 +770,7 @@ def podman():
     plot(
         title="postgres",
         filename=pod['postgres'], 
-        ylabel='(percentage)', 
+        ylabel='(seconds)', 
         dayfirst=True, includeColYlabel=True,
         division=1e+9
     )
@@ -669,7 +778,7 @@ def podman():
     plot(
         title="rabbitmq",
         filename=pod['rabbitmq'], 
-        ylabel='(percentage)', 
+        ylabel='(seconds)', 
         dayfirst=True, includeColYlabel=True,
         division=1e+9
     )
@@ -677,7 +786,7 @@ def podman():
     plot(
         title="redis",
         filename=pod['redis'], 
-        ylabel='(percentage)', 
+        ylabel='(seconds)', 
         dayfirst=True, includeColYlabel=True,
         division=1e+9
     )
@@ -701,14 +810,14 @@ def podman():
         division=1024
     )
     
-    # plot(
-    #     title="cron",
-    #     filename=pod['cron'], 
-    #     ylabel=labels(L_name=GRAPH_NAMES['cron'], metrics='MB'),
-    #     dayfirst=True, includeColYlabel=True,
-    #     cols_to_divide=['rss', 'vsz', 'swap'],
-    #     division=1024
-    # )
+    plot(
+        title="cron",
+        filename=pod['cron'], 
+        ylabel=labels(L_name=GRAPH_NAMES['cron'], metrics='MB'),
+        dayfirst=True, includeColYlabel=True,
+        cols_to_divide=['rss', 'vsz', 'swap'],
+        division=1024
+    )
     
     plot(
         title="crun",
