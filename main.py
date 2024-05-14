@@ -24,33 +24,31 @@ def prints_usage():
     return int(input('Escolha: '))
 
 def main():
-    while True:
-        tipo_virtualizador_plots = prints_usage()
+    tipo_virtualizador_plots = prints_usage()
 
-        if tipo_virtualizador_plots == 1:
-            vbox_plots()
-            
-        elif tipo_virtualizador_plots == 2:
-            kvm_plots()
-            
-        elif tipo_virtualizador_plots == 3:
-            xen_plots()
-            
-        elif tipo_virtualizador_plots == 4:
-            lxc_plots()
-            
-        elif tipo_virtualizador_plots == 5:
-            docker_antigo()
-            
-        elif tipo_virtualizador_plots == 6:
-            docker_novo()
-            
-        elif tipo_virtualizador_plots == 7:
-            podman()
-            
-        else:
-            print('Escolha uma opção válida!')
-            break
+    if tipo_virtualizador_plots == 1:
+        vbox_plots()
+        
+    elif tipo_virtualizador_plots == 2:
+        kvm_plots()
+        
+    elif tipo_virtualizador_plots == 3:
+        xen_plots()
+        
+    elif tipo_virtualizador_plots == 4:
+        lxc_plots()
+        
+    elif tipo_virtualizador_plots == 5:
+        docker_antigo()
+        
+    elif tipo_virtualizador_plots == 6:
+        docker_novo()
+        
+    elif tipo_virtualizador_plots == 7:
+        podman()
+        
+    else:
+        print('Escolha uma opção válida!')
 
 if __name__ == '__main__':
     main()

@@ -1,3 +1,4 @@
+import sys
 from plotagem.plot_graficos import plot
 from plotagem.plot_fragmentacao import fragmentacao
 from pathlib import Path
@@ -10,7 +11,7 @@ from plotagem.logs import (
     pod
 )
 
-MINIMUM_PROCESS_OCCURRENCES :int = 10
+MINIMUM_PROCESS_OCCURRENCES :int = 50
 
 dir1 = Path("plotagem/plot_images")
 dir2 = Path("plotagem/registros de monitoramento dos testes de envelhecimento")
@@ -369,7 +370,9 @@ def lxc_plots():
 
 # ------------------------------------------------ CONTAINERS ------------------------------------------- #
 def docker_antigo():
-    fragmentacao(MINIMUM_PROCESS_OCCURRENCES)
+    fragmentacao(MINIMUM_PROCESS_OCCURRENCES, analisar_ciclo=True, processo_manual=True)
+    
+    sys.exit(1)
     
     # plot(
     #     title="runs",
@@ -544,7 +547,9 @@ def docker_antigo():
 
 
 def docker_novo():
-    fragmentacao(MINIMUM_PROCESS_OCCURRENCES)
+    fragmentacao(MINIMUM_PROCESS_OCCURRENCES, analisar_ciclo=True, processo_manual=True)
+    
+    sys.exit(1)
     
     # plot(
     #     title="runs",
@@ -719,7 +724,9 @@ def docker_novo():
 
 
 def podman():
-    fragmentacao(MINIMUM_PROCESS_OCCURRENCES)
+    fragmentacao(MINIMUM_PROCESS_OCCURRENCES, analisar_ciclo=True, processo_manual=True)
+    
+    sys.exit(1)
     
     # plot(
     #     title="runs",
