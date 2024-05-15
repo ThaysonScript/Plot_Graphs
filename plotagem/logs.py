@@ -1,7 +1,7 @@
 # NAME = 'docker_new_debian_new'
 NAME = 'docker_old_ubuntu_old'
 # NAME = 'podman_new_ubuntu_new'
-PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/logs/{NAME}'
+PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/teste_inicial/{NAME}'
 
 NAME_FORMAT = 'frag_' + NAME.replace('/', '_')
 
