@@ -1,5 +1,3 @@
-import numpy as np
-
 try:
     import matplotlib.pyplot as plt
     import pandas as pd
@@ -12,7 +10,11 @@ except ImportError as e:
 plt.close('all')
 
 
-def plot(filename, ylabel, datetime="date_time", title=None, separator=';', decimal_separator=",", dayfirst=False, multiply=1, division=1, includeColYlabel=False, cols_to_divide=[], cols_to_multiply=[]):
+def plot(
+    filename, ylabel, datetime="date_time", title=None, separator=';', 
+    decimal_separator=",", dayfirst=False, multiply=1, division=1, decimals_quantity=2, 
+    includeColYlabel=False, cols_to_divide=[], cols_to_multiply=[]
+):
     try:
         df = pd.read_csv(filename, sep=separator, decimal=decimal_separator, dayfirst=dayfirst, parse_dates=[datetime]).rename(columns={datetime: 'seconds'})
     
@@ -23,11 +25,9 @@ def plot(filename, ylabel, datetime="date_time", title=None, separator=';', deci
         except Exception as e:
             print("Erro ao ler o arquivo CSV:", e)
             return None
-        
-    print(f'filename: {filename}')
 
     # df['seconds'] = pd.to_datetime(df['seconds'], format='%d-%m-%Y-%H:%M:%S')
-    df['seconds'] = df['seconds'].apply(lambda x: pd.to_datetime(x, format="%d-%m-%Y-%H:%M:%S"))
+    # df['seconds'] = df['seconds'].apply(lambda x: pd.to_datetime(x, format="%d-%m-%Y-%H:%M:%S"))
 
     df['seconds'] = (df['seconds'] - df['seconds'][0]).dt.total_seconds() / 3600
     df = df.set_index('seconds').replace(',', '.', regex=True).apply(lambda x: pd.to_numeric(x, errors='ignore'))
@@ -62,6 +62,8 @@ def plot(filename, ylabel, datetime="date_time", title=None, separator=';', deci
             figsize=(10,5),
             style='k',
         )
+        
+        ax.yaxis.set_major_formatter('{x:.2f}')
 
         # Adicionar a linha da regressão
         ax.plot(x, Y_pred, color='red')

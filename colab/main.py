@@ -1,15 +1,19 @@
-import sys
-from plotagem.plot_graficos import plot
-from plotagem.plot_fragmentacao import fragmentacao
-from pathlib import Path
-from plotagem.logs import (
-    vbox,
-    kvm,
-    xen,
-    dock_antigo,
-    dock_novo,
-    pod
-)
+try:
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    from sklearn.linear_model import LinearRegression
+    from pathlib import Path
+    import pandas as pd
+    # NAME = 'docker_new_debian_new'
+    # NAME = 'docker_old_ubuntu_old'
+    NAME = 'podman_new_ubuntu_new'
+    NAME = 'logs_com_disco_1gb'
+    PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/virtualbox/{NAME}'
+    NAME_FORMAT = 'frag_' + NAME.replace('/', '_')
+    
+except ImportError as e:
+    print(f'Erro de importação: {e}')
+    exit(1)
 
 MINIMUM_PROCESS_OCCURRENCES :int = 1
 
@@ -28,7 +32,414 @@ if not dir2.exists():
     
 else:
     print('verificação de diretorio 2 feita\n')
+    
+
+vbox = {
+    'monitoring_cpu':
+        f'{PASTA_LOGS}/machine_monitoring-cpu.csv',
         
+    'monitoring_disks':
+        f'{PASTA_LOGS}/machine_monitoring-disk.csv',
+    
+    'monitoring_zumbies':
+        f'{PASTA_LOGS}/machine_monitoring-zombies.csv',
+    
+    'monitoring_mem':
+        f'{PASTA_LOGS}/machine_monitoring-mem.csv',
+        
+    'machineHost_server_status':
+        f'{PASTA_LOGS}/machineHost_server_status.csv',
+        
+    'reset_times':
+        f'{PASTA_LOGS}/reset_times.csv',
+    
+    'server_response_time_monitoring':
+        f'{PASTA_LOGS}/response_times.csv',
+        
+    'monitoring_VboxHeadless':
+        f'{PASTA_LOGS}/vbox_monitoring-VBoxHeadless.csv',
+    
+    'monitoring_VboxSvc':
+        f'{PASTA_LOGS}/vbox_monitoring-VBoxSVC.csv',
+    
+    'monitoring_VboxXPCOMIPCD':
+        f'{PASTA_LOGS}/vbox_monitoring-VBoxXPCOMIPCD.csv'
+}
+
+kvm = {
+    'monitoring_cpu':
+        f'{PASTA_LOGS}/machine_monitoring-cpu.csv',
+        
+    'monitoring_disks':
+        f'{PASTA_LOGS}/machine_monitoring-disk.csv',
+    
+    'monitoring_zumbies':
+        f'{PASTA_LOGS}/machine_monitoring-zombies.csv',
+    
+    'monitoring_mem':
+        f'{PASTA_LOGS}/machine_monitoring-mem.csv',
+        
+    'machineHost_server_status':
+        f'{PASTA_LOGS}/machineHost_server_status.csv',
+        
+    'reset_times':
+        f'{PASTA_LOGS}/reset_times.csv',
+    
+    'server_response_time_monitoring':
+        f'{PASTA_LOGS}/response_times.csv',
+        
+    'kvm_Headless':
+        f'{PASTA_LOGS}/kvm_Headless_monitoring.csv',
+    
+    'kvm_libvirtd_service':
+        f'{PASTA_LOGS}/kvm_libvirtd_service_monitoring.csv'
+}
+
+xen = {
+    'monitoring_cpu':
+        f'{PASTA_LOGS}/machine_monitoring-cpu.csv',
+        
+    'monitoring_disks':
+        f'{PASTA_LOGS}/machine_monitoring-disk.csv',
+    
+    'monitoring_zumbies':
+        f'{PASTA_LOGS}/machine_monitoring-zombies.csv',
+    
+    'monitoring_mem':
+        f'{PASTA_LOGS}/machine_monitoring-mem.csv',
+        
+    'machineHost_server_status':
+        f'{PASTA_LOGS}/machineHost_server_status.csv',
+        
+    'reset_times':
+        f'{PASTA_LOGS}/reset_times.csv',
+    
+    'server_response_time_monitoring':
+        f'{PASTA_LOGS}/response_times.csv',
+        
+    'xen_monitoring_oxenstored':
+        f'{PASTA_LOGS}/xen_monitoring-oxenstored.csv',
+    
+    'xen_monitoring_xen_balloon':
+        f'{PASTA_LOGS}/xen_monitoring-xen-balloon.csv',
+        
+        
+    'xen_monitoring_xenbus':
+        f'{PASTA_LOGS}/xen_monitoring-xenbus.csv',
+    
+    'xen_monitoring_xenconsoled':
+        f'{PASTA_LOGS}/xen_monitoring-xenconsoled.csv'
+}
+
+# vs 20
+dock_antigo = {
+    # RUNS
+    'runs':
+        f'{PASTA_LOGS}/runs.csv',
+        
+    # --------------------- MACHINE PROCESS
+    'cpu':
+        f'{PASTA_LOGS}/cpu.csv',
+        
+    'memory':
+        f'{PASTA_LOGS}/memory.csv',
+        
+    'disk':
+        f'{PASTA_LOGS}/disk.csv',
+        
+    'process':
+        f'{PASTA_LOGS}/process.csv',
+        
+    # ------------------- IMAGE PROCESS
+    'nginx':
+        f'{PASTA_LOGS}/nginx.csv',
+        
+    'postgres':
+        f'{PASTA_LOGS}/postgres.csv',
+        
+    'rabbitmq':
+        f'{PASTA_LOGS}/rabbitmq.csv',
+        
+    'redis':
+        f'{PASTA_LOGS}/redis.csv',
+        
+    # ------------------- CONTAINER PROCESS
+    'docker': 
+        f'{PASTA_LOGS}/docker.csv',
+        
+    'dockerd': 
+        f'{PASTA_LOGS}/dockerd.csv',
+        
+    'containerd': 
+        f'{PASTA_LOGS}/containerd.csv',
+        
+    'containerd-shim': 
+        f'{PASTA_LOGS}/containerd-shim.csv',
+        
+    'docker-proxy': 
+        f'{PASTA_LOGS}/docker-proxy.csv',
+        
+    'runc': 
+        f'{PASTA_LOGS}/runc.csv',
+        
+    'containerd': 
+        f'{PASTA_LOGS}/containerd.csv',
+        
+    'containerd-shim': 
+        f'{PASTA_LOGS}/containerd-shim.csv',
+        
+    'runc': 
+        f'{PASTA_LOGS}/runc.csv',
+        
+    # -------------------- SERVICE PROCESS
+    'java': 
+        f'{PASTA_LOGS}/java.csv',
+        
+    'beam.smp': 
+        f'{PASTA_LOGS}/beam.smp.csv',
+        
+    'initdb': 
+        f'{PASTA_LOGS}/initdb.csv',
+        
+    'mysqld': 
+        f'{PASTA_LOGS}/mysqld.csv',
+        
+    'postgres_process': 
+        f'{PASTA_LOGS}/postgres_process.csv'
+}
+
+# vs 26
+dock_novo = {
+    # RUNS
+    'runs':
+        f'{PASTA_LOGS}/runs.csv',
+        
+    # --------------------- MACHINE PROCESS
+    'cpu':
+        f'{PASTA_LOGS}/cpu.csv',
+        
+    'memory':
+        f'{PASTA_LOGS}/memory.csv',
+        
+    'disk':
+        f'{PASTA_LOGS}/disk.csv',
+        
+    'process':
+        f'{PASTA_LOGS}/process.csv',
+        
+    # ------------------- IMAGE PROCESS
+    'nginx':
+        f'{PASTA_LOGS}/nginx.csv',
+        
+    'postgres':
+        f'{PASTA_LOGS}/postgres.csv',
+        
+    'rabbitmq':
+        f'{PASTA_LOGS}/rabbitmq.csv',
+        
+    'redis':
+        f'{PASTA_LOGS}/redis.csv',
+        
+    # ------------------- CONTAINER PROCESS
+    'docker': 
+        f'{PASTA_LOGS}/docker.csv',
+        
+    'dockerd': 
+        f'{PASTA_LOGS}/dockerd.csv',
+        
+    'containerd': 
+        f'{PASTA_LOGS}/containerd.csv',
+        
+    'containerd-shim': 
+        f'{PASTA_LOGS}/containerd-shim.csv',
+        
+    'docker-proxy': 
+        f'{PASTA_LOGS}/docker-proxy.csv',
+        
+    'runc': 
+        f'{PASTA_LOGS}/runc.csv',
+        
+    'containerd': 
+        f'{PASTA_LOGS}/containerd.csv',
+        
+    'containerd-shim': 
+        f'{PASTA_LOGS}/containerd-shim.csv',
+        
+    'runc': 
+        f'{PASTA_LOGS}/runc.csv',
+        
+    # -------------------- SERVICE PROCESS
+    'java': 
+        f'{PASTA_LOGS}/java.csv',
+        
+    'beam.smp': 
+        f'{PASTA_LOGS}/beam.smp.csv',
+        
+    'initdb': 
+        f'{PASTA_LOGS}/initdb.csv',
+        
+    'mysqld': 
+        f'{PASTA_LOGS}/mysqld.csv',
+        
+    'postgres_process': 
+        f'{PASTA_LOGS}/postgres_process.csv'
+}
+
+# vs 4.9
+pod = {
+    # RUNS
+    'runs':
+        f'{PASTA_LOGS}/runs.csv',
+        
+    # --------------------- MACHINE PROCESS
+    'cpu':
+        f'{PASTA_LOGS}/cpu.csv',
+        
+    'disk':
+        f'{PASTA_LOGS}/disk.csv',
+        
+    'memory':
+        f'{PASTA_LOGS}/memory.csv',
+        
+    'process':
+        f'{PASTA_LOGS}/process.csv',
+        
+    # ------------------- IMAGE PROCESS
+    'nginx':
+        f'{PASTA_LOGS}/nginx.csv',
+        
+    'postgres':
+        f'{PASTA_LOGS}/postgres.csv',
+        
+    'rabbitmq':
+        f'{PASTA_LOGS}/rabbitmq.csv',
+        
+    'redis':
+        f'{PASTA_LOGS}/redis.csv',
+        
+    # ------------------- CONTAINER PROCESS
+    'podman':
+        f'{PASTA_LOGS}/podman.csv',
+        
+    'conmon':
+        f'{PASTA_LOGS}/conmon.csv',
+        
+    'cron':
+        f'{PASTA_LOGS}/cron.csv',
+        
+    'crun':
+        f'{PASTA_LOGS}/crun.csv',
+        
+    'systemd':
+        f'{PASTA_LOGS}/systemd.csv',
+    
+    # -------------------- SERVICE PROCESS
+    'java':
+        f'{PASTA_LOGS}/java.csv',
+        
+    'postgres_process':
+        f'{PASTA_LOGS}/postgres_process.csv',
+        
+    'mysqld':
+        f'{PASTA_LOGS}/mysqld.csv',
+        
+    'initdb':
+        f'{PASTA_LOGS}/initdb.csv',
+        
+    'beam.smp':
+        f'{PASTA_LOGS}/beam.smp.csv'
+}
+    
+    
+def plot(
+    filename, ylabel, datetime="date_time", title=None, separator=';', 
+    decimal_separator=",", dayfirst=False, multiply=1, division=1, decimals_quantity=2, 
+    includeColYlabel=False, cols_to_divide=[], cols_to_multiply=[]
+):
+    try:
+        df = pd.read_csv(filename, sep=separator, decimal=decimal_separator, dayfirst=dayfirst, parse_dates=[datetime]).rename(columns={datetime: 'seconds'})
+    
+    except ValueError:
+        try:
+            df = pd.read_csv(filename, sep=separator, decimal=decimal_separator, dayfirst=dayfirst, parse_dates=['time']).rename(columns={'time': 'seconds'})        
+
+        except Exception as e:
+            print("Erro ao ler o arquivo CSV:", e)
+            return None
+
+    # df['seconds'] = pd.to_datetime(df['seconds'], format='%d-%m-%Y-%H:%M:%S')
+    # df['seconds'] = df['seconds'].apply(lambda x: pd.to_datetime(x, format="%d-%m-%Y-%H:%M:%S"))
+
+    df['seconds'] = (df['seconds'] - df['seconds'][0]).dt.total_seconds() / 3600
+    df = df.set_index('seconds').replace(',', '.', regex=True).apply(lambda x: pd.to_numeric(x, errors='ignore'))
+    
+    # perform data multiplication
+    cols_to_multiply = cols_to_multiply if len(cols_to_multiply) != 0 else df.columns
+    df[cols_to_multiply] = df[cols_to_multiply].mul(multiply)
+    
+    # perform data division
+    cols_to_divide = cols_to_divide if len(cols_to_divide) != 0 else df.columns
+    df[cols_to_divide] = df[cols_to_divide].div(division)
+        
+    for col in df.columns:            
+        col_mix = col + " " + ylabel if type(ylabel) is str and includeColYlabel else ylabel
+
+        df[col] = df[col].fillna(0)
+
+        x = df.index.to_numpy().reshape((-1, 1))
+        y = df[col].to_numpy().reshape((-1, 1))
+
+        model = LinearRegression()
+        model.fit(x, y)
+
+        Y_pred = model.predict(x)
+
+        ax = df.plot(
+            y=col,
+            legend=0,
+            xlabel='Time(h)',
+            ylabel=col_mix if type(ylabel) is str else ylabel[col] if type(ylabel) is dict and col in ylabel else col,
+            title=title if type(title) is str else title[col] if type(title) is dict and col in title else col,
+            figsize=(10,5),
+            style='k',
+        )
+        
+        ax.yaxis.set_major_formatter('{x:.2f}')
+
+        # Adicionar a linha da regressão
+        ax.plot(x, Y_pred, color='red')
+        plt.show()
+        
+        fig = ax.get_figure()
+        fig.savefig(f'./plotagem/plot_images/{title}-{col}.png')
+        
+
+def fragmentacao(minimum_process_occurrences=1):   
+    pasta_logs = f'{PASTA_LOGS}/fragmentation.csv'     
+    df = pd.read_csv(pasta_logs, delimiter=';')     # Read the CSV file into a DataFrame
+    
+    df = df.dropna()        # drop nan column values and emptieds array
+    
+    # Convert the datetime column to a datetime object
+    df['datetime'] = pd.to_datetime(df['datetime'])
+
+    # Set the index to the datetime column
+    df = df.set_index('datetime')
+
+    df['time_passed'] = (df.index - df.index[0]).total_seconds() / 3600
+
+    # Resetting the index to use 'time_passed' as index
+    df = df.set_index('time_passed')
+
+    df_filtered = df[df['process_occurrences'] >= minimum_process_occurrences]
+
+    df_pivot = df_filtered.pivot(columns='process', values='process_occurrences')
+    
+    ax = df_pivot.plot(ylabel='Process occurrences (qtt)', xlabel='Time(H)')
+
+    # Save the figure
+    fig = ax.get_figure()
+    fig.savefig(f'./plotagem/plot_images/{NAME_FORMAT}.png')
 
 # ------------------------------------------------ VIRTUALIZADORES ------------------------------------------- #
 def vbox_plots():
