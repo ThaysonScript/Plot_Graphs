@@ -1,3 +1,6 @@
+import sys
+
+
 try:
     import matplotlib.pyplot as plt
     import pandas as pd
@@ -25,16 +28,26 @@ def plot(
         except Exception as e:
             print("Erro ao ler o arquivo CSV:", e)
             return None
+        
+    print(f'\n\nfilename: {filename}\n\n')
+    df.dropna(inplace=True)
+
+    # df['seconds'] = pd.to_datetime(df['seconds'])
 
     # df['seconds'] = pd.to_datetime(df['seconds'], format='%d-%m-%Y-%H:%M:%S')
     # df['seconds'] = df['seconds'].apply(lambda x: pd.to_datetime(x, format="%d-%m-%Y-%H:%M:%S"))
 
     df['seconds'] = (df['seconds'] - df['seconds'][0]).dt.total_seconds() / 3600
     df = df.set_index('seconds').replace(',', '.', regex=True).apply(lambda x: pd.to_numeric(x, errors='ignore'))
-    
+
     # perform data multiplication
     cols_to_multiply = cols_to_multiply if len(cols_to_multiply) != 0 else df.columns
     df[cols_to_multiply] = df[cols_to_multiply].mul(multiply)
+    
+    
+    if filename == './plotagem/registros de monitoramento dos testes de envelhecimento/outros/logs/response_times.csv':
+        df['response_time'] = df['response_time'] / 1000    
+    
     
     # perform data division
     cols_to_divide = cols_to_divide if len(cols_to_divide) != 0 else df.columns

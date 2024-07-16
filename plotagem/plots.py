@@ -11,7 +11,7 @@ from plotagem.logs import (
     pod
 )
 
-MINIMUM_PROCESS_OCCURRENCES :int = 1
+MINIMUM_PROCESS_OCCURRENCES :int = 5
 
 dir1 = Path("plotagem/plot_images")
 dir2 = Path("plotagem/registros de monitoramento dos testes de envelhecimento")
@@ -251,11 +251,11 @@ def xen_plots():
         cols_to_divide=["rss","vsz","swap"],
         ylabel={
             'cpu': 'CPU usage (percentage)',
+            'mem': 'Memory usage (percentage)',
             "rss": "Physical memory usage(MB)",
             "vsz": "Virtual memory usage (MB)",
+            "thread": "Number of threads(qtt)",
             "swap": "Swap used(MB)",
-            'mem': 'Memory usage (percentage)',
-            "thread": "Number of threads(qtt)"
         },
         division=1024, dayfirst=True
     )

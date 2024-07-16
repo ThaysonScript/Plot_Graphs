@@ -1,8 +1,8 @@
 # NAME = 'docker_new_debian_new'
 # NAME = 'docker_old_ubuntu_old'
 # NAME = 'podman_new_ubuntu_new'
-NAME = 'logs_com_disco_1gb'
-PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/virtualbox/{NAME}'
+NAME = 'logs'
+PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/outros/{NAME}'
 
 NAME_FORMAT = 'frag_' + NAME.replace('/', '_')
 
@@ -95,7 +95,6 @@ xen = {
     
     'xen_monitoring_xen_balloon':
         f'{PASTA_LOGS}/xen_monitoring-xen-balloon.csv',
-        
         
     'xen_monitoring_xenbus':
         f'{PASTA_LOGS}/xen_monitoring-xenbus.csv',
