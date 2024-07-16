@@ -8,6 +8,18 @@ from plotagem.plots import (
         podman
     )
 
+
+plots_mapping = {
+    1: vbox_plots,
+    2: kvm_plots,
+    3: xen_plots,
+    4: lxc_plots,
+    5: docker_antigo,
+    6: docker_novo,
+    7: podman
+}
+
+
 def prints_usage():
     print('Altere primeiro o arquivo logs.py\n')
     input('Digite qualquer coisa para continuar _')
@@ -21,32 +33,22 @@ def prints_usage():
     print('Digite [6] para docker novo')
     print('Digite [7] para podman')
     
-    return int(input('Escolha: '))
+
+def get_user_choice():
+    try:
+        return int(input('Escolha: '))
+    
+    except ValueError as e:
+        return print(f'erro gerado {e}')
+
 
 def main():
-    tipo_virtualizador_plots = prints_usage()
-
-    if tipo_virtualizador_plots == 1:
-        vbox_plots()
-        
-    elif tipo_virtualizador_plots == 2:
-        kvm_plots()
-        
-    elif tipo_virtualizador_plots == 3:
-        xen_plots()
-        
-    elif tipo_virtualizador_plots == 4:
-        lxc_plots()
-        
-    elif tipo_virtualizador_plots == 5:
-        docker_antigo()
-        
-    elif tipo_virtualizador_plots == 6:
-        docker_novo()
-        
-    elif tipo_virtualizador_plots == 7:
-        podman()
-        
+    prints_usage()
+    
+    user_choice = get_user_choice()
+    
+    if user_choice in plots_mapping:
+        plots_mapping[user_choice]
     else:
         print('Escolha uma opção válida!')
 
