@@ -1,16 +1,12 @@
-import sys
-
-
 try:
+    import sys
     import matplotlib.pyplot as plt
     import pandas as pd
     from sklearn.linear_model import LinearRegression
     
 except ImportError as e:
     print(f'Erro de importação: {e}')
-    exit(1)
-
-plt.close('all')
+    sys.exit(1)
 
 
 def plot(
@@ -31,11 +27,6 @@ def plot(
         
     print(f'\n\nfilename: {filename}\n\n')
     df.dropna(inplace=True)
-
-    # df['seconds'] = pd.to_datetime(df['seconds'])
-
-    # df['seconds'] = pd.to_datetime(df['seconds'], format='%d-%m-%Y-%H:%M:%S')
-    # df['seconds'] = df['seconds'].apply(lambda x: pd.to_datetime(x, format="%d-%m-%Y-%H:%M:%S"))
 
     df['seconds'] = (df['seconds'] - df['seconds'][0]).dt.total_seconds() / 3600
     df = df.set_index('seconds').replace(',', '.', regex=True).apply(lambda x: pd.to_numeric(x, errors='ignore'))
