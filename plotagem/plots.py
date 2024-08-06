@@ -8,10 +8,11 @@ from plotagem.logs import (
     xen,
     dock_antigo,
     dock_novo,
-    pod
+    pod,
+    jmeter
 )
 
-MINIMUM_PROCESS_OCCURRENCES :int = 5
+MINIMUM_PROCESS_OCCURRENCES :int = 1
 
 dir1 = Path("plotagem/plot_images")
 dir2 = Path("plotagem/registros de monitoramento dos testes de envelhecimento")
@@ -34,11 +35,20 @@ else:
 def vbox_plots():
     fragmentacao(MINIMUM_PROCESS_OCCURRENCES)
     
+    # plot(
+    #     title="JMETER",
+    #     filename=jmeter['jmeter_log'],
+    #     ylabel='(none)',
+    #     dayfirst=True, includeColYlabel=True
+    # )
+    
+    # sys.exit(1)
+    
     plot(
-    title="CPU",
-    filename=vbox['monitoring_cpu'], 
-    ylabel='(percentage)', 
-    dayfirst=True, includeColYlabel=True
+        title="CPU",
+        filename=vbox['monitoring_cpu'], 
+        ylabel='(percentage)', 
+        dayfirst=True, includeColYlabel=True
     )
 
     plot(

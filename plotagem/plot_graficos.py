@@ -1,16 +1,12 @@
-import sys
-
-
 try:
+    import sys
     import matplotlib.pyplot as plt
     import pandas as pd
     from sklearn.linear_model import LinearRegression
     
 except ImportError as e:
     print(f'Erro de importação: {e}')
-    exit(1)
-
-plt.close('all')
+    sys.exit(1)
 
 
 def plot(
@@ -18,6 +14,10 @@ def plot(
     decimal_separator=",", dayfirst=False, multiply=1, division=1, decimals_quantity=2, 
     includeColYlabel=False, cols_to_divide=[], cols_to_multiply=[]
 ):
+    # df = pd.read_csv(filename)
+    
+    
+    # sys.exit(1)
     try:
         df = pd.read_csv(filename, sep=separator, decimal=decimal_separator, dayfirst=dayfirst, parse_dates=[datetime]).rename(columns={datetime: 'seconds'})
     
@@ -28,6 +28,9 @@ def plot(
         except Exception as e:
             print("Erro ao ler o arquivo CSV:", e)
             return None
+        
+        
+        
         
     print(f'\n\nfilename: {filename}\n\n')
     df.dropna(inplace=True)
@@ -76,7 +79,7 @@ def plot(
             style='k',
         )
         
-        ax.yaxis.set_major_formatter('{x:.2f}')
+        # ax.yaxis.set_major_formatter('{x:.2f}')
 
         # Adicionar a linha da regressão
         ax.plot(x, Y_pred, color='red')

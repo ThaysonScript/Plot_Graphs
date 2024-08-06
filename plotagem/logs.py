@@ -2,9 +2,14 @@
 # NAME = 'docker_old_ubuntu_old'
 # NAME = 'podman_new_ubuntu_new'
 NAME = 'logs'
-PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/outros/{NAME}'
+PASTA_LOGS = f'./plotagem/registros de monitoramento dos testes de envelhecimento/Vbox-12h-3d/{NAME}'
 
 NAME_FORMAT = 'frag_' + NAME.replace('/', '_')
+
+jmeter = {
+    'jmeter_log':
+        f'{PASTA_LOGS}/jmeter.log'
+}
 
 vbox = {
     'monitoring_cpu':
@@ -25,8 +30,10 @@ vbox = {
     'reset_times':
         f'{PASTA_LOGS}/reset_times.csv',
     
+    # 'server_response_time_monitoring':
+    #     f'{PASTA_LOGS}/response_times.csv',
     'server_response_time_monitoring':
-        f'{PASTA_LOGS}/response_times.csv',
+        f'{PASTA_LOGS}/nginx_response.csv',
         
     'monitoring_VboxHeadless':
         f'{PASTA_LOGS}/vbox_monitoring-VBoxHeadless.csv',
