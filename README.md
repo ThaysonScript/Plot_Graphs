@@ -14,11 +14,15 @@
 
 ### Prerequisites
 - Python 3.x
-- Required Python libraries (specified in `requirements.txt`)
 
 ### Installation
 1. Clone the repository:
    ```bash
      git clone https://github.com/yourusername/VMStatPlot.git
      cd VMStatPlot
+
+     python3 -m venv env
+     source env/bin/activate
+
+     python3 main.py
    ```
